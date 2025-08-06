@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Eviction Notice / Complaint</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 750px; margin: auto; padding: 30px; }
+    h2 { text-align: center; }
+    .section { margin-top: 15px; }
+    .basis { background: #f0f7ff; padding: 10px; border-radius: 6px; }
+    .disclaimer { font-size: 0.75em; color: #555; margin-top: 25px; }
+    .highlight { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Notice of Illegal Eviction / Rent Dispute</h2>
+  <p><strong>Date:</strong> {{ complaint_date }}</p>
+  <p>To,<br/>
+     {{ opponent_name }} (Landlord),<br/>
+     Property: {{ property_address }}</p>
+
+  <div class="section">
+    <p><strong>Subject:</strong> Illegal eviction / unlawful notice to vacate</p>
+    <p>Respected Sir/Madam,</p>
+    <p>
+      I, {{ tenant_name }}, residing at {{ property_address }}, wish to bring to your attention that I have been asked to vacate the premises without proper notice / through unlawful means. 
+      This is in violation of my tenancy rights and applicable rent control regulations.
+    </p>
+    {% if escalation %}
+    <p><em>Note: This appears to involve immediate or improper eviction; consider consulting a legal aid provider for in-person assistance.</em></p>
+    {% endif %}
+    <p>
+      I request that you withdraw the eviction notice and allow me to continue possession unless due legal process is followed.
+    </p>
+  </div>
+
+  <div class="basis">
+    <p><strong>Basis of Complaint:</strong></p>
+    <ul>
+      {% for v in legal.violations %}
+        <li><strong>{{ v.law }}</strong> — {{ v.section }}: {{ v.explanation }}</li>
+      {% endfor %}
+      {% if escalation %}
+        <li><em>Potential complexity detected: immediate action recommended.</em></li>
+      {% endif %}
+    </ul>
+    <p><em>{{ legal.note }}</em></p>
+  </div>
+
+  <div class="section">
+    <p>Thank you,<br/>
+      {{ tenant_name }}<br/>
+      Contact: {{ contact }}<br/>
+      Email: {{ email }}
+    </p>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This is a draft notice. It is recommended to seek verification from a legal aid resource before formal submission.
+  </div>
+</body>
+</html>

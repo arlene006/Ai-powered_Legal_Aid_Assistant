@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Legal Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #chat {
+            border: 2px solid #2c3e50;
+            border-radius: 10px;
+            padding: 15px;
+            height: 500px; /* Elongated height */
+            width: 80%;
+            margin: 0 auto 20px auto;
+            background-color: white;
+            overflow-y: auto;
+            font-size: 18px; /* Bigger font for readability */
+            line-height: 1.5;
+        }
+        #message {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            padding: 12px 18px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .send-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        .pdf-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+    </style>
+    <script>
+        let lastIssue = "";
+        let lastAdvice = "";
+
+        async function sendMessage() {
+            const message = document.getElementById("message").value;
+            lastIssue = message;
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+            const data = await res.json();
+            lastAdvice = data.reply;
+            document.getElementById("chat").innerHTML += `<p><b>You:</b> ${message}</p><p><b>AI:</b> ${data.reply}</p>`;
+            document.getElementById("message").value = "";
+        }
+
+        async function generateNotice() {
+            const name = prompt("Enter your full name:");
+            const address = prompt("Enter your address:");
+            const res = await fetch("/generate_notice", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, address, issue: lastIssue, advice: lastAdvice })
+            });
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "legal_notice.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+    </script>
+</head>
+<body>
+    <h1>⚖️ AI Legal Assistant</h1>
+    <div id="chat"></div>
+    <div style="text-align:center;">
+        <input type="text" id="message" placeholder="Describe your issue...">
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+        <button class="pdf-btn" onclick="generateNotice()">Generate Legal Notice</button>
+    </div>
+</body>
+</html>

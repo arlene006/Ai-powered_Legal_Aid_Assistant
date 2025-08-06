@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Consumer Complaint</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 750px; margin: auto; padding: 30px; }
+    h2 { text-align: center; }
+    .section { margin-top: 15px; }
+    .basis { background: #f9f9f9; padding: 12px; border-radius: 6px; }
+    .disclaimer { font-size: 0.75em; color: #555; margin-top: 25px; }
+  </style>
+</head>
+<body>
+  <h2>Consumer Complaint</h2>
+  <p><strong>Date:</strong> {{ complaint_date }}</p>
+  <p>To,<br/>
+     The Consumer Forum / Concerned Authority,</p>
+
+  <div class="section">
+    <p><strong>Subject:</strong> Complaint regarding {{ product_service }} purchased on {{ purchase_date }}</p>
+    <p>Respected Sir/Madam,</p>
+    <p>
+      I purchased {{ product_service }} on {{ purchase_date }}. The issue is: {{ issue_description }}. 
+      I have suffered a loss of ₹{{ amount_lost }} due to this defective/misrepresented product/service.
+    </p>
+    {% if escalation %}
+    <p><em>Note: The circumstances seem to require further in-person review; consider contacting a consumer aid center.</em></p>
+    {% endif %}
+    <p>
+      I request appropriate proceedings to address this grievance, including refund/replacement and any compensation as per law.
+    </p>
+  </div>
+
+  <div class="basis">
+    <p><strong>Legal Basis:</strong></p>
+    <ul>
+      {% for v in legal.violations %}
+        <li><strong>{{ v.law }}</strong> — {{ v.section }}: {{ v.explanation }}</li>
+      {% endfor %}
+      {% if escalation %}
+        <li><em>Complexity detected; consider escalation.</em></li>
+      {% endif %}
+    </ul>
+    <p><em>{{ legal.note }}</em></p>
+  </div>
+
+  <div class="section">
+    <p>Thank you,<br/>
+      {{ complainant_name }}<br/>
+      Contact: {{ contact }}<br/>
+      Email: {{ email }}
+    </p>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This is a generated draft. For serious disputes, please consult a legal aid provider before filing.
+  </div>
+</body>
+</html>
