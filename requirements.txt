@@ -41,10 +41,8 @@ hf-xet==1.1.5
 html5lib==1.1
 httplib2==0.22.0
 huggingface-hub==0.34.3
-ibm-cos-sdk==2.14.2
-ibm-cos-sdk-core==2.14.2
-ibm-cos-sdk-s3transfer==2.14.2
-ibm_watson_machine_learning==1.0.368
+
+
 idna==3.10
 IMAPClient==2.1.0
 importlib_metadata==8.7.0
